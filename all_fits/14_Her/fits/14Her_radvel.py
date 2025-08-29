@@ -74,7 +74,9 @@ params['curv'].vary = False
 # Load radial velocity data, in this example the data is contained in an hdf file,
 # the resulting dataframe or must have 'time', 'mnvel', 'errvel', and 'tel' keys
 # the velocities are expected to be in m/s
-path = '/Users/zhexingli/Desktop/UCR/01-RESEARCH/PROJECTS/WFIRST/Refinement/RealSims/09-14Her/14Her_rv_master_binned.txt'
+
+# path = '/Users/zhexingli/Desktop/UCR/01-RESEARCH/PROJECTS/WFIRST/Refinement/RealSims/09-14Her/14Her_rv_master_binned.txt'
+path = './14Her_rv_master_binned.txt'
 data = pd.read_csv(path,header=None,skiprows=1,delim_whitespace=True,names=('time','mnvel','errvel','tel'))
 
 # Define prior shapes and widths here.
@@ -95,5 +97,3 @@ time_base = np.mean([np.min(data.time), np.max(data.time)])
 # optional argument that can contain stellar mass in solar units (mstar) and
 # uncertainty (mstar_err). If not set, mstar will be set to nan.
 stellar = dict(mstar=0.969, mstar_err= 0.042)    # numbers from Rosenthal et al. 2021
-
-
