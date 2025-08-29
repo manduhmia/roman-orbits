@@ -3,6 +3,8 @@ from astropy.table import Table
 from copy import deepcopy
 import toml, os
 from pprint import pprint
+import radvel
+import numpy as np
 
 #running_from_top_dir = True
 
@@ -207,4 +209,19 @@ finaldata[standard_names[3]] = finaldata[standard_names[4]].astype(str) + "-" + 
 
 print("Final set of RVs consists of {} unique data points.".format(len(finaldata)))
 
-finaldata.to_csv("all_rvs.csv", index = False)
+# Sarah: we don't want to fit RVs from the same instrument but different pubs differently,
+# so change the separation Nick implemented above here (super clunky but oh well)
+finaldata = finaldata.rename(columns={"tel":"inst", "inst":"tel"})
+
+# lalitolis harps0 data has offset subtracted, so let's treat this data as a separate instrument
+finaldata.loc[finaldata.inst == 'harps0-laliotis2023','tel'] = 'harps0-sep'
+
+finaldata.to_csv("all_rvs_unbinned.csv", index = False)
+
+time, mnvel, errvel, tel = radvel.utils.bintels(finaldata['time'].values,\
+                            finaldata['mnvel'].values,finaldata['errvel'].values,\
+                            finaldata['tel'])
+bin_dict = {'time':time, 'mnvel':mnvel, 'errvel':errvel, 'tel':tel}
+
+data_all_bin = pd.DataFrame(data=bin_dict)
+data_all_bin.to_csv('all_rvs_binned.csv', index=False, header=True)

@@ -1,3 +1,7 @@
+Sarah notes: removed pepe2007 tex sources from the sources.toml file. These data are
+also in the benedict 2022 data file and parsing was causing problems. Trimmed first
+75% of chains. Parameters overall consistent with Benedict+ 22.
+
 # HD160691 - Nick Schragal
 
 This folder contains two sub-folders:
